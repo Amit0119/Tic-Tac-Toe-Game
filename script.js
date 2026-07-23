@@ -11,6 +11,11 @@ let scoreO = 0;
 let scoreXElement = document.querySelector("#score-x");
 let scoreOElement = document.querySelector("#score-o");
 
+// Sound Effects (Audio objects)
+let clickSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/button_tiny.mp3");
+let winSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/bell_ring.mp3");
+let drawSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/branch_break.mp3");
+
 let turnO = true; // playerX, playerO
 
 const winPatterns = [
@@ -26,6 +31,10 @@ const winPatterns = [
 
 boxes.forEach((box) => {
     box.addEventListener("click", () => {
+        // Reset sound to start and play
+        clickSound.currentTime = 0;
+        clickSound.play();
+
         if(turnO === true){
             box.innerText = "O";
             box.classList.add("o-marker");
@@ -96,6 +105,9 @@ const checkWinner = () => {
                     scoreOElement.innerText = scoreO;
                 }
 
+                // Play winning sound
+                winSound.play();
+
                 // Show popup with a slight delay
                 setTimeout(() => {
                     showWinner(posVal1);
@@ -114,6 +126,9 @@ const checkWinner = () => {
 
         if(allFilled === true) {
             winnerText.innerText = "Game Draw!";
+            
+            // Play draw sound
+            drawSound.play();
 
             winnerModal.classList.remove("hidden");
         }
