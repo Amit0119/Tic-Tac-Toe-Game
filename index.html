@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe | Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for premium poppins font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Ambient glowing mesh background -->
+    <div class="background-mesh"></div>
+    
+    <!-- Main game container -->
+    <main class="container">
+        <h1 class="game-title">Tic-Tac-Toe</h1>
+        
+        <!-- Displays current player's turn -->
+        <div class="status-panel">
+            <div class="player-turn" id="turn-indicator">X's Turn</div>
+        </div>
+
+        <!-- 3x3 Grid for the game -->
+        <div class="game-board">
+            <button class="box" data-index="0"></button>
+            <button class="box" data-index="1"></button>
+            <button class="box" data-index="2"></button>
+            <button class="box" data-index="3"></button>
+            <button class="box" data-index="4"></button>
+            <button class="box" data-index="5"></button>
+            <button class="box" data-index="6"></button>
+            <button class="box" data-index="7"></button>
+            <button class="box" data-index="8"></button>
+        </div>
+
+        <!-- Game controls -->
+        <div class="controls">
+            <button id="reset-btn" class="btn primary-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                New Game
+            </button>
+        </div>
+
+        <!-- Modal for showing game result -->
+        <div id="winner-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <h2 id="winner-text">X Wins!</h2>
+                <button id="modal-reset-btn" class="btn primary-btn">Play Again</button>
+            </div>
+        </div>
+    </main>
+    
+    <!-- You can add your script.js link here -->
+    <script src="script.js"></script>
+</body>
+</html>
