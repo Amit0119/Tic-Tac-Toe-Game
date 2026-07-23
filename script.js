@@ -111,15 +111,50 @@ const computerMove = () => {
     if (isGameOver) return;
     
     let emptyBoxes = [];
-    boxes.forEach((box) => {
+    boxes.forEach((box, index) => {
         if (box.innerText === "") {
-            emptyBoxes.push(box);
+            emptyBoxes.push({ box: box, index: index });
         }
     });
 
     if (emptyBoxes.length > 0) {
-        let randomBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
-        makeMove(randomBox);
+        let moveFound = false;
+
+        // Function to check if a move leads to an immediate win for a given player
+        const findWinningMove = (player) => {
+            for (let pattern of winPatterns) {
+                let val1 = boxes[pattern[0]].innerText;
+                let val2 = boxes[pattern[1]].innerText;
+                let val3 = boxes[pattern[2]].innerText;
+
+                if (val1 === player && val2 === player && val3 === "") return pattern[2];
+                if (val1 === player && val3 === player && val2 === "") return pattern[1];
+                if (val2 === player && val3 === player && val1 === "") return pattern[0];
+            }
+            return -1;
+        };
+
+        // 1. Can Computer ("O") win? Take it!
+        let winMove = findWinningMove("O");
+        if (winMove !== -1) {
+            makeMove(boxes[winMove]);
+            moveFound = true;
+        }
+
+        // 2. Can Human ("X") win? Block them!
+        if (!moveFound) {
+            let blockMove = findWinningMove("X");
+            if (blockMove !== -1) {
+                makeMove(boxes[blockMove]);
+                moveFound = true;
+            }
+        }
+
+        // 3. Otherwise, pick random empty box
+        if (!moveFound) {
+            let randomObj = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+            makeMove(randomObj.box);
+        }
     }
 };
 
