@@ -34,7 +34,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2rem 0;
     position: relative;
 }
 
@@ -367,4 +369,48 @@ body {
 
 .input-group input::placeholder {
     color: rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   Mobile Responsiveness (Media Queries)
+   ========================================= */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .game-title {
+        font-size: 2rem;
+    }
+
+    .glass-panel {
+        padding: 1.5rem;
+        width: 90%;
+    }
+
+    .glass-panel h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .box {
+        font-size: 3.5rem;
+        border-radius: 0.8rem;
+    }
+
+    .game-board {
+        padding: 0.75rem;
+        gap: 8px;
+        border-radius: 1rem;
+    }
+
+    .score-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
 }
