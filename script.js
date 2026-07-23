@@ -5,6 +5,12 @@ let winnerModal = document.querySelector("#winner-modal");
 let winnerText = document.querySelector("#winner-text");
 let modalResetBtn = document.querySelector("#modal-reset-btn");
 
+// Score tracking variables and UI elements
+let scoreX = 0;
+let scoreO = 0;
+let scoreXElement = document.querySelector("#score-x");
+let scoreOElement = document.querySelector("#score-o");
+
 let turnO = true; // playerX, playerO
 
 const winPatterns = [
@@ -75,10 +81,22 @@ const checkWinner = () => {
         if(posVal1 !==  "" && posVal2 !== "" && posVal3 !== "") {
             if(posVal1 === posVal2 && posVal2 === posVal3) {
                 winnerFound = true;
+                
+                // Highlight winning boxes
                 boxes[pattern[0]].classList.add("winning-box");
                 boxes[pattern[1]].classList.add("winning-box");
                 boxes[pattern[2]].classList.add("winning-box");  
 
+                // Update score based on the winner
+                if (posVal1 === "X") {
+                    scoreX++;
+                    scoreXElement.innerText = scoreX;
+                } else {
+                    scoreO++;
+                    scoreOElement.innerText = scoreO;
+                }
+
+                // Show popup with a slight delay
                 setTimeout(() => {
                     showWinner(posVal1);
                 },1500)

@@ -293,3 +293,47 @@ body {
     text-decoration-thickness: 8px; 
 
 }
+
+/* =========================================
+   Scoreboard Styling
+   ========================================= */
+.scoreboard {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.score-card {
+    flex: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+}
+
+.score-card span {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.score-card h3 {
+    font-size: 2rem;
+    margin-top: 0.2rem;
+    font-weight: 800;
+}
+
+.x-score h3 { 
+    color: var(--neon-blue); 
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); 
+}
+.o-score h3 { 
+    color: var(--neon-pink); 
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.4); 
+}
