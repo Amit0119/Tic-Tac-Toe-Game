@@ -66,6 +66,7 @@ const resetGame = () => {
 
 // check winner function 
 const checkWinner = () => {
+    let winnerFound = false;
     for (let pattern of winPatterns) {
         let posVal1 = boxes[pattern[0]].innerText;
         let posVal2 = boxes[pattern[1]].innerText;
@@ -73,6 +74,7 @@ const checkWinner = () => {
 
         if(posVal1 !==  "" && posVal2 !== "" && posVal3 !== "") {
             if(posVal1 === posVal2 && posVal2 === posVal3) {
+                winnerFound = true;
                 boxes[pattern[0]].classList.add("winning-box");
                 boxes[pattern[1]].classList.add("winning-box");
                 boxes[pattern[2]].classList.add("winning-box");  
@@ -81,6 +83,21 @@ const checkWinner = () => {
                     showWinner(posVal1);
                 },1500)
             }
+        }
+    }
+    
+    if(winnerFound === false) {
+        let allFilled = true;
+        for(let box of boxes) {
+            if(box.innerText === "") {
+                allFilled = false;
+            }
+        }
+
+        if(allFilled === true) {
+            winnerText.innerText = "Game Draw!";
+
+            winnerModal.classList.remove("hidden");
         }
     }
 };
