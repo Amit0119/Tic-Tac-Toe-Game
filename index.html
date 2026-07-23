@@ -54,6 +54,22 @@
             </button>
         </div>
 
+        <!-- Modal for getting player names -->
+        <div id="name-modal" class="modal">
+            <div class="modal-content glass-panel">
+                <h2>Enter Player Names</h2>
+                <div class="input-group">
+                    <input type="text" id="player-x-name" placeholder="Player X Name (e.g. Rahul)" maxlength="12">
+                    <input type="text" id="player-o-name" placeholder="Player O Name (e.g. Amit)" maxlength="12">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                        <input type="checkbox" id="play-computer" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="play-computer" style="color: white; cursor: pointer;">Play Against Computer</label>
+                    </div>
+                </div>
+                <button id="start-game-btn" class="btn primary-btn">Start Game</button>
+            </div>
+        </div>
+
         <!-- Modal for showing game result -->
         <div id="winner-modal" class="modal hidden">
             <div class="modal-content glass-panel">
@@ -62,7 +78,8 @@
             </div>
         </div>
     </main>
-    
+    <!-- Confetti Library for Celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <!-- You can add your script.js link here -->
     <script src="script.js"></script>
 </body>

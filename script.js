@@ -11,12 +11,26 @@ let scoreO = 0;
 let scoreXElement = document.querySelector("#score-x");
 let scoreOElement = document.querySelector("#score-o");
 
+// Player Name variables
+let nameModal = document.querySelector("#name-modal");
+let startGameBtn = document.querySelector("#start-game-btn");
+let playerXInput = document.querySelector("#player-x-name");
+let playerOInput = document.querySelector("#player-o-name");
+let playerXLabel = document.querySelector(".x-score span");
+let playerOLabel = document.querySelector(".o-score span");
+
+let playerXName = "Player X";
+let playerOName = "Player O";
+let isComputerMode = false;
+let playComputerCheckbox = document.querySelector("#play-computer");
+
 // Sound Effects (Audio objects)
 let clickSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/button_tiny.mp3");
 let winSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/bell_ring.mp3");
 let drawSound = new Audio("https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/branch_break.mp3");
 
-let turnO = true; // playerX, playerO
+let turnO = false; // false = X's turn, true = O's turn
+let isGameOver = false;
 
 const winPatterns = [
     [0,1,2],
@@ -29,30 +43,85 @@ const winPatterns = [
     [6,7,8]
 ]
 
+// Start Game Modal Logic
+startGameBtn.addEventListener("click", () => {
+    isComputerMode = playComputerCheckbox.checked;
+
+    playerXName = playerXInput.value.trim() || "Player X";
+    
+    if (isComputerMode) {
+        playerOName = "Computer 🤖";
+        playerOInput.value = "";
+    } else {
+        playerOName = playerOInput.value.trim() || "Player O";
+    }
+    
+    playerXLabel.innerText = playerXName;
+    playerOLabel.innerText = playerOName;
+    
+    turnO = false; // X starts first
+    isGameOver = false;
+    turnIndicator.innerText = `${playerXName}'s Turn`;
+    turnIndicator.className = "player-turn x-turn";
+    
+    nameModal.classList.add("hidden");
+    clickSound.currentTime = 0;
+    clickSound.play();
+});
+
 boxes.forEach((box) => {
     box.addEventListener("click", () => {
-        // Reset sound to start and play
-        clickSound.currentTime = 0;
-        clickSound.play();
+        // Prevent human clicking if it's computer's turn or game over
+        if (isComputerMode && turnO) return;
+        if (isGameOver) return;
 
-        if(turnO === true){
-            box.innerText = "O";
-            box.classList.add("o-marker");
-            turnO = false; 
-            turnIndicator.innerText = "X's Turn";
-            turnIndicator.className = "player-turn x-turn"
-        }
-        else{
-            box.innerText = "X";
-            box.classList.add("x-marker");
-            turnO = true;
-            turnIndicator.innerText = "o's Turn";
-            turnIndicator.className = "player-turn o-turn";
-        }
-        box.disabled = true;
-        checkWinner();
+        makeMove(box);
     });
 });
+
+const makeMove = (box) => {
+    // Reset sound to start and play
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    if(turnO === false){
+        box.innerText = "X";
+        box.classList.add("x-marker");
+        turnO = true; 
+        turnIndicator.innerText = `${playerOName}'s Turn`;
+        turnIndicator.className = "player-turn o-turn";
+    }
+    else{
+        box.innerText = "O";
+        box.classList.add("o-marker");
+        turnO = false;
+        turnIndicator.innerText = `${playerXName}'s Turn`;
+        turnIndicator.className = "player-turn x-turn";
+    }
+    box.disabled = true;
+    checkWinner();
+
+    // Trigger computer move if it's computer mode and O's turn
+    if (isComputerMode && turnO && !isGameOver) {
+        setTimeout(computerMove, 600);
+    }
+};
+
+const computerMove = () => {
+    if (isGameOver) return;
+    
+    let emptyBoxes = [];
+    boxes.forEach((box) => {
+        if (box.innerText === "") {
+            emptyBoxes.push(box);
+        }
+    });
+
+    if (emptyBoxes.length > 0) {
+        let randomBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+        makeMove(randomBox);
+    }
+};
 
 const disableBoxes = () => {
     for( let box of boxes) {
@@ -67,9 +136,10 @@ const showWinner = (winner) => {
 };
 
 const resetGame = () => {
-    turnO = true;
-    turnIndicator.innerText = "o's Turn";
-    turnIndicator.className = "player-turn o-turn";
+    turnO = false;
+    isGameOver = false;
+    turnIndicator.innerText = `${playerXName}'s Turn`;
+    turnIndicator.className = "player-turn x-turn";
 
     for(let box of boxes) {
         box.disabled = false;
@@ -107,11 +177,23 @@ const checkWinner = () => {
 
                 // Play winning sound
                 winSound.play();
+                
+                // Fire Confetti! 🎉
+                confetti({
+                    particleCount: 200,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+
+                let winnerName = posVal1 === "X" ? playerXName : playerOName;
 
                 // Show popup with a slight delay
                 setTimeout(() => {
-                    showWinner(posVal1);
-                },1500)
+                    showWinner(winnerName);
+                },1500);
+
+                isGameOver = true;
+                return;
             }
         }
     }
@@ -131,6 +213,7 @@ const checkWinner = () => {
             drawSound.play();
 
             winnerModal.classList.remove("hidden");
+            isGameOver = true;
         }
     }
 };
